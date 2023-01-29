@@ -1,0 +1,32 @@
+{
+  "name": "gm-validate",
+  "version": "1.0.0",
+  "description": "gm-validate simple library to validate data",
+  "keywords": [
+    "gm-validate",
+    "validator",
+    "validate",
+    "valid",
+    "validation"
+  ],
+  "main": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx tsc -w"
+  },
+  "author": "Mohamed Ali",
+  "license": "ISC",
+  "types": "./dist\\index.d.ts",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevMohamed501/gm-validate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DevMohamed501/gm-validate/issues"
+  },
+  "homepage": "https://github.com/DevMohamed501/gm-validate#readme"
+}
