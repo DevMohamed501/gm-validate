@@ -7,9 +7,14 @@
     "validator",
     "validate",
     "valid",
-    "validation"
+    "validation",
+    "javascript",
+    "react",
+    "reactjs",
+    "nodejs"
   ],
-  "main": "./dist/index.js",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,9 +22,8 @@
   },
   "author": "Mohamed Ali",
   "license": "ISC",
-  "types": "./dist\\index.d.ts",
   "directories": {
-    "lib": "lib"
+    "test": "test"
   },
   "repository": {
     "type": "git",

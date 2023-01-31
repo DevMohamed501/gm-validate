@@ -11,45 +11,37 @@ Install the library with `npm install gm-validate`
 > ## **Use**
 
 ```javascript
-import Gm from "gm-validate";
+import gm from "gm-validate";
 ```
 
 ### Create required validation schema for validate input data
 
-### _Exsample_ :
-
 ```javascript
 import gm, { schema, useValidate } from "gm-validate";
 
-//Create validate schema for login email
-const loginValidate = schema({
-    email: gm().required().isEmail().trim().collect(),
+const form = schema({
+    name: gm()
+        .required()
+        .type("string")
+        .min(3)
+        .pattern(/^[a-zA-Z]+$/)
+        .collect(),
+    age: gm()
+        .required()
+        .type("number")
+        .pattern(/^[0-9]+$/)
+        .min(18)
+        .max(60)
+        .collect(),
+    email: gm().required().isEmail().collect(),
     password: gm().required().min(6).trim().collect(),
 });
-// Use collect method in end of the chain to collect required data .
-// For exsample we need validate form data like .
-const form = {
-    email: "abcdef", // error
-    password: "", // error
-};
-//-----------------------------------------
-const form = {
-    email: "hamada@gmail.io", // correct
-    password: "", // correct
-};
-// Use useValidate to validate data and return error if found .
-const loginError = useValidate(loginValidate, form);
-
-// in this case will return error message as object like .
-
-// ->{ email: "Email not valid", password: "Input is required" };
-
-// error message built-in in Gm but youcan custom the error message .
+// collect method in end of the chain to collect required data .
 ```
 
-### Create required validation schema with custom message and some options
+### **Create required validation schema with custom message and some options**
 
-### _Exsample_ for signup form
+### _*Exsample* for signup form_
 
 ```javascript
 import gm, { useValidate, schema } from "gm-validate";
@@ -57,10 +49,14 @@ import gm, { useValidate, schema } from "gm-validate";
 const regex = /^[a-zA-Z]+$/g;
 const signupValdite = schema({
     first_name: gm()
-        .required("Please fill input First Name") // Message if field is required
-        .type("string") // choose field type
-        .min(3, "First name must be 3 character or more") // minimum field length is 3 with custom message
-        .pattern(/^[a-zA-Z]+$/g, "Numbers and symbol not support in input field") // regular expression to custom the input pattern
+        // Message if field is required
+        .required("Please fill input First Name")
+        // choose field type
+        .type("string")
+        // minimum field length is 3 with custom message
+        .min(3, "First name must be 3 character or more")
+        // regular expression to custom the input pattern
+        .pattern(/^[a-zA-Z]+$/g, "Numbers and symbols not support in input field")
         .collect(),
     last_name: gm()
         .required("Please fill input Last Name")
@@ -71,11 +67,14 @@ const signupValdite = schema({
     age: gm().required("Please fill input Age").type("number").min(18, "Age must be +18").collect(),
     email: gm()
         .required("Please fill input Email")
-        .isEmail("please provide a valid email", ["@gmail.com", "@gmail.io", "@hotmail.com"]) // Support email domain
-        .trim() // Chech if field has space, you can write error message
+        // Support email domain
+        .isEmail("please provide a valid email", ["@gmail.com", "@gmail.io", "@hotmail.com"])
+        // Chech if field has space, you can write error message
+        .trim()
         .collect(),
     password: gm().required("Please fill input Password").min(6).trim().collect(),
-    confirm_password: gm().match("password", "Password not match").collect(), // use match to check if current like password field
+    // use match method to check if current field like password field
+    confirm_password: gm().match("password", "Password not match").collect(),
 });
 
 // Signup Form
