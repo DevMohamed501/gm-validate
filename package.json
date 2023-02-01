@@ -1,36 +1,36 @@
 {
-  "name": "gm-validate",
-  "version": "1.0.0",
-  "description": "gm-validate simple library to validate data",
-  "keywords": [
-    "gm-validate",
-    "validator",
-    "validate",
-    "valid",
-    "validation",
-    "javascript",
-    "react",
-    "reactjs",
-    "nodejs"
-  ],
-  "main": "dist/index.js",
-  "types": "./dist/index.d.ts",
-  "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx tsc -w"
-  },
-  "author": "Mohamed Ali",
-  "license": "ISC",
-  "directories": {
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DevMohamed501/gm-validate.git"
-  },
-  "bugs": {
-    "url": "https://github.com/DevMohamed501/gm-validate/issues"
-  },
-  "homepage": "https://github.com/DevMohamed501/gm-validate#readme"
+    "name": "gm-validate",
+    "version": "1.0.2",
+    "description": "gm-validate simple library to validate data",
+    "keywords": [
+        "gm-validate",
+        "validator",
+        "validate",
+        "valid",
+        "validation",
+        "javascript",
+        "react",
+        "reactjs",
+        "nodejs"
+    ],
+    "main": "dist/index.js",
+    "types": "./dist/index.d.ts",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "npx tsc -w"
+    },
+    "author": "Mohamed Ali",
+    "license": "ISC",
+    "directories": {
+        "test": "test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/DevMohamed501/gm-validate.git"
+    },
+    "bugs": {
+        "url": "https://github.com/DevMohamed501/gm-validate/issues"
+    },
+    "homepage": "https://github.com/DevMohamed501/gm-validate#readme"
 }

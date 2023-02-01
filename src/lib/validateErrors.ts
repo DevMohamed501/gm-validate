@@ -110,6 +110,11 @@ const useValidate = function (schema: IObjectKeys, input: {}) {
                             continue;
                         }
                     }
+                } else {
+                    if (input[key] < requiredData[key].min.min) {
+                        errors[key] = requiredData[key].min.message;
+                        continue;
+                    }
                 }
             }
 
@@ -141,6 +146,11 @@ const useValidate = function (schema: IObjectKeys, input: {}) {
                             errors[key] = requiredData[key].max.message;
                             continue;
                         }
+                    }
+                } else {
+                    if (input[key] > requiredData[key].max.max) {
+                        errors[key] = requiredData[key].max.message;
+                        continue;
                     }
                 }
             }
