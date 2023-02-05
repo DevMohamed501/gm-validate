@@ -2,13 +2,17 @@
 
 ## _A simple library to validate Data._
 
+## _Easy to use just a few steps_
+
+## _Easy to custom error message_
+
 ### Esay install and use
 
-> ## **Install**
+## **Install**
 
 Install the library with `npm install gm-validate`
 
-> ## **Use**
+## **Use**
 
 ```javascript
 import gm from "gm-validate";
