@@ -1,36 +1,71 @@
 {
-  "name": "gm-validate",
-  "version": "1.0.0",
-  "description": "gm-validate simple library to validate data",
-  "keywords": [
-    "gm-validate",
-    "validator",
-    "validate",
-    "valid",
-    "validation",
-    "javascript",
-    "react",
-    "reactjs",
-    "nodejs"
-  ],
-  "main": "dist/index.js",
-  "types": "./dist/index.d.ts",
-  "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx tsc -w"
-  },
-  "author": "Mohamed Ali",
-  "license": "ISC",
-  "directories": {
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DevMohamed501/gm-validate.git"
-  },
-  "bugs": {
-    "url": "https://github.com/DevMohamed501/gm-validate/issues"
-  },
-  "homepage": "https://github.com/DevMohamed501/gm-validate#readme"
+    "name": "gm-validate",
+<<<<<<< HEAD
+    "version": "1.0.0",
+=======
+    "version": "1.0.2",
+>>>>>>> 2d213d58db8dd5b41bed16e0b8e80ff335a90ded
+    "description": "gm-validate simple library to validate data",
+    "keywords": [
+        "gm-validate",
+        "validator",
+        "validate",
+        "valid",
+        "validation",
+        "javascript",
+        "react",
+        "reactjs",
+        "nodejs"
+    ],
+<<<<<<< HEAD
+    "types": "./lib/cjs/types/index.d.ts",
+    "main": "./lib/cjs/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "npx tsc -w",
+        "clean": "rm -rf ./lib",
+        "build": "npm run clean && npm run build:esm && npm run build:cjs",
+        "build:esm": "tsc -p ./tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",
+        "build:cjs": "tsc -p ./tsconfig.cjs.json",
+        "prepack": "npm run build"
+=======
+    "main": "dist/index.js",
+    "types": "./dist/index.d.ts",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "npx tsc -w"
+>>>>>>> 2d213d58db8dd5b41bed16e0b8e80ff335a90ded
+    },
+    "author": "Mohamed Ali",
+    "license": "ISC",
+    "directories": {
+        "test": "test"
+    },
+<<<<<<< HEAD
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./lib/esm/types/index.d.ts",
+                "default": "./lib/esm/index.mjs"
+            },
+            "require": {
+                "types": "./lib/cjs/types/index.d.ts",
+                "default": "./lib/cjs/index.js"
+            }
+        }
+    },
+    "files": [
+        "lib/**/*"
+    ],
+=======
+>>>>>>> 2d213d58db8dd5b41bed16e0b8e80ff335a90ded
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/DevMohamed501/gm-validate.git"
+    },
+    "bugs": {
+        "url": "https://github.com/DevMohamed501/gm-validate/issues"
+    },
+    "homepage": "https://github.com/DevMohamed501/gm-validate#readme"
 }
