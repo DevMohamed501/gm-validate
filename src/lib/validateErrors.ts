@@ -2,7 +2,7 @@ import { IObjectKeys } from "../types/types";
 import typeOf from "../utils/typeOf.js";
 import isNumber from "./isNumber.js";
 
-const useValidate = function (schema: IObjectKeys, input: {}) {
+const useValidate = function (schema: IObjectKeys, form: {}) {
     if (!schema) {
         throw new TypeError("First parameter Gm Schema Object not found...");
     }
@@ -14,12 +14,12 @@ const useValidate = function (schema: IObjectKeys, input: {}) {
         throw new TypeError("Error Gm schema not found!");
     }
 
-    if (!input) {
-        throw new TypeError("Second parameter Input object data not found...");
+    if (!form) {
+        throw new TypeError("Second parameter form object data not found...");
     }
 
-    if (typeOf(input) !== "object" || Object.keys(input).length === 0) {
-        throw new TypeError("Error input object data");
+    if (typeOf(form) !== "object" || Object.keys(form).length === 0) {
+        throw new TypeError("Error form object data");
     }
 
     if (!schema.data && !schema.length) {
@@ -31,7 +31,7 @@ const useValidate = function (schema: IObjectKeys, input: {}) {
 
     for (const key in requiredData) {
         if (key === "isSchema") continue;
-        if (input.hasOwnProperty(key)) {
+        if (form.hasOwnProperty(key)) {
             /**
              * * Check Between Minimum & Maximum
              */
@@ -46,7 +46,7 @@ const useValidate = function (schema: IObjectKeys, input: {}) {
              * * required('message')
              */
             if (requiredData[key].required && requiredData[key].required.required) {
-                if (input[key] === "" || input[key] === undefined) {
+                if (form[key] === "" || form[key] === undefined) {
                     errors[key] = requiredData[key].required.message;
                     continue;
                 }
@@ -57,8 +57,8 @@ const useValidate = function (schema: IObjectKeys, input: {}) {
              * * trim('message')
              */
             if (requiredData[key].trim) {
-                if (typeOf(input[key]).trim() === "string") {
-                    if (input[key] !== input[key].trim()) {
+                if (typeOf(form[key]).trim() === "string") {
+                    if (form[key] !== form[key].trim()) {
                         errors[key] = requiredData[key].trim.message;
                         continue;
                     }
@@ -71,11 +71,11 @@ const useValidate = function (schema: IObjectKeys, input: {}) {
              */
             if (requiredData[key].type) {
                 if (requiredData[key].type.type === "number") {
-                    if (!isNumber(input[key])) {
+                    if (!isNumber(form[key])) {
                         errors[key] = requiredData[key].type.message;
                         continue;
                     }
-                } else if (typeOf(input[key]).trim() !== requiredData[key].type.type) {
+                } else if (typeOf(form[key]).trim() !== requiredData[key].type.type) {
                     errors[key] = requiredData[key].type.message;
                     continue;
                 }
@@ -86,18 +86,23 @@ const useValidate = function (schema: IObjectKeys, input: {}) {
              * * min(number,'message')
              */
             if (requiredData[key].min) {
-                if (
-                    typeOf(input[key]).trim() === "string" ||
-                    typeOf(input[key]).trim() === "array" ||
-                    typeOf(input[key]).trim() === "object"
+                if (typeOf(form[key]) === "number") {
+                    if (form[key] < requiredData[key].min.min) {
+                        errors[key] = requiredData[key].min.message;
+                        continue;
+                    }
+                } else if (
+                    typeOf(form[key]).trim() === "string" ||
+                    typeOf(form[key]).trim() === "array" ||
+                    typeOf(form[key]).trim() === "object"
                 ) {
-                    if (typeOf(input[key]).trim() === "object") {
-                        if (Object.keys(input[key]).length < requiredData[key].min.min) {
+                    if (typeOf(form[key]).trim() === "object") {
+                        if (Object.keys(form[key]).length < requiredData[key].min.min) {
                             errors[key] = requiredData[key].min.message;
                             continue;
                         }
                     } else if (requiredData[key].type && requiredData[key].type.type === "number") {
-                        const value = input[key];
+                        const value = form[key];
                         if (isNumber(value)) {
                             if (parseInt(value) < requiredData[key].min.min) {
                                 errors[key] = requiredData[key].min.message;
@@ -105,7 +110,7 @@ const useValidate = function (schema: IObjectKeys, input: {}) {
                             }
                         }
                     } else {
-                        if (input[key].length < requiredData[key].min.min) {
+                        if (form[key].length < requiredData[key].min.min) {
                             errors[key] = requiredData[key].min.message;
                             continue;
                         }
@@ -118,18 +123,23 @@ const useValidate = function (schema: IObjectKeys, input: {}) {
              * * max(number,'message')
              */
             if (requiredData[key].max) {
-                if (
-                    typeOf(input[key]).trim() === "string" ||
-                    typeOf(input[key]).trim() === "array" ||
-                    typeOf(input[key]).trim() === "object"
+                if (typeOf(form[key]) === "number") {
+                    if (form[key] > requiredData[key].max.max) {
+                        errors[key] = requiredData[key].max.message;
+                        continue;
+                    }
+                } else if (
+                    typeOf(form[key]).trim() === "string" ||
+                    typeOf(form[key]).trim() === "array" ||
+                    typeOf(form[key]).trim() === "object"
                 ) {
-                    if (typeOf(input[key]).trim() === "object") {
-                        if (Object.keys(input[key]).length > requiredData[key].max.max) {
+                    if (typeOf(form[key]).trim() === "object") {
+                        if (Object.keys(form[key]).length > requiredData[key].max.max) {
                             errors[key] = requiredData[key].max.message;
                             continue;
                         }
                     } else if (requiredData[key].type && requiredData[key].type.type === "number") {
-                        const value = input[key];
+                        const value = form[key];
                         if (isNumber(value)) {
                             if (parseInt(value) > requiredData[key].max.max) {
                                 errors[key] = requiredData[key].max.message;
@@ -137,7 +147,7 @@ const useValidate = function (schema: IObjectKeys, input: {}) {
                             }
                         }
                     } else {
-                        if (input[key].length > requiredData[key].max.max) {
+                        if (form[key].length > requiredData[key].max.max) {
                             errors[key] = requiredData[key].max.message;
                             continue;
                         }
@@ -150,18 +160,18 @@ const useValidate = function (schema: IObjectKeys, input: {}) {
              * * isEmail('message')
              */
             if (requiredData[key].isEmail && requiredData[key].isEmail.isEmail) {
-                if (typeOf(input[key]).trim() === "string") {
+                if (typeOf(form[key]).trim() === "string") {
                     const emailRegex =
                         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-                    if (!input[key].toLowerCase().match(emailRegex)) {
+                    if (!form[key].toLowerCase().match(emailRegex)) {
                         errors[key] = requiredData[key].isEmail.message;
                         continue;
                     }
 
                     if (requiredData[key].isEmail.support && typeOf(requiredData[key].isEmail.support) === "array") {
                         const support = requiredData[key].isEmail.support;
-                        const email = input[key].split("@")[1];
+                        const email = form[key].split("@")[1];
                         if (!support.includes(`@${email}`)) {
                             errors[key] = `We only support ${support.toString()}`;
                         }
@@ -177,7 +187,7 @@ const useValidate = function (schema: IObjectKeys, input: {}) {
                 if (typeOf(requiredData[key].pattern.pattern).trim() === "regexp") {
                     // const passwordRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})?/);
                     const regex = requiredData[key].pattern.pattern;
-                    if (!input[key].match(regex)) {
+                    if (!regex.test(form[key])) {
                         errors[key] = requiredData[key].pattern.message;
                         continue;
                     }
@@ -191,8 +201,8 @@ const useValidate = function (schema: IObjectKeys, input: {}) {
             if (requiredData[key].match) {
                 if (requiredData[requiredData[key].match.match] && requiredData[key].match.match !== key) {
                     if (
-                        input[key].toLowerCase().trim() !== input[requiredData[key].match.match].toLowerCase().trim() ||
-                        input[key].trim() === ""
+                        form[key].toLowerCase().trim() !== form[requiredData[key].match.match].toLowerCase().trim() ||
+                        form[key].trim() === ""
                     ) {
                         errors[key] = requiredData[key].match.message;
                     }

@@ -1,4 +1,4 @@
-import { IObjectKeys, GmType } from "../types/types.js";
+import { IObjectKeys } from "../types/types.js";
 import typeOf from "../utils/typeOf.js";
 
 export const gm = function () {
