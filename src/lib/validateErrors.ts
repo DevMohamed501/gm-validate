@@ -116,7 +116,7 @@ const useValidate = function (schema: IObjectKeys, form: {}) {
                         }
                     }
                 } else {
-                    if (input[key] < requiredData[key].min.min) {
+                    if (form[key] < requiredData[key].min.min) {
                         errors[key] = requiredData[key].min.message;
                         continue;
                     }
@@ -158,7 +158,7 @@ const useValidate = function (schema: IObjectKeys, form: {}) {
                         }
                     }
                 } else {
-                    if (input[key] > requiredData[key].max.max) {
+                    if (form[key] > requiredData[key].max.max) {
                         errors[key] = requiredData[key].max.message;
                         continue;
                     }
