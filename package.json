@@ -1,6 +1,6 @@
 {
     "name": "gm-validate",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "description": "gm-validate simple library to validate data",
     "keywords": [
         "gm-validate",
@@ -29,21 +29,6 @@
     "directories": {
         "test": "test"
     },
-    "exports": {
-        ".": {
-            "import": {
-                "types": "./lib/esm/types/index.d.ts",
-                "default": "./lib/esm/index.mjs"
-            },
-            "require": {
-                "types": "./lib/cjs/types/index.d.ts",
-                "default": "./lib/cjs/index.js"
-            }
-        }
-    },
-    "files": [
-        "lib/**/*"
-    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/DevMohamed501/gm-validate.git"
