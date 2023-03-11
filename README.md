@@ -119,6 +119,8 @@ const imageValidate = schema({
     maxSize : "1GB"
     maxSize : "1TB"
 
+    write it with lowercase or uppercase -> 10kb  or 10KB
+
     ----------------------
     extension : array | undefined   default:undefined
     can use like :

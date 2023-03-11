@@ -118,7 +118,7 @@ class Gm {
         }
     ) {
         // this.setErrorMessageType(_Message, "isFile");
-        let val: any = { isFile: true, message: "", option: { ...options } };
+        let val: any = { isFile: true, message: "", option: { extension: undefined, maxSize: 0, ...options } };
 
         this.inp.isFile = val;
         return this;

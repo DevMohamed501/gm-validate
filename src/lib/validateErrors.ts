@@ -244,15 +244,14 @@ const useValidate = function (schema: IObjectKeys, form: {}) {
                 const files = form[key];
                 const maxSize = requiredData[key].isFile.option.maxSize;
                 let size: number = 0;
-
                 if (isNaN(maxSize)) {
                     const match = maxSize.match(/(\d+)(\D+)/);
 
-                    if (!Object.prototype.hasOwnProperty.call(dataBytes, match[2])) {
+                    if (!Object.prototype.hasOwnProperty.call(dataBytes, String(match[2]).toUpperCase())) {
                         throw new TypeError(`Only use "BYTES", "KB", "MB", "GB" or "TB" `);
                     }
 
-                    size = parseInt(match[1]) * dataBytes[match[2]];
+                    size = parseInt(match[1]) * dataBytes[String(match[2]).toUpperCase()];
                 } else {
                     size = maxSize;
                 }
