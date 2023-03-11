@@ -113,7 +113,7 @@ class Gm {
     public isFile(
         // _Message: String = "File not valid",
         options: FileOptions = {
-            extension: [],
+            extension: undefined,
             maxSize: 0,
         }
     ) {

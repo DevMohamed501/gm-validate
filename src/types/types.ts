@@ -26,6 +26,6 @@ export enum Types {
 }
 
 export interface FileOptions {
-    extension?: string[];
-    maxSize?: number;
+    extension?: string[] | undefined;
+    maxSize?: number | string;
 }

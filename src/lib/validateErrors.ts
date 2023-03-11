@@ -231,24 +231,51 @@ const useValidate = function (schema: IObjectKeys, form: {}) {
              * * isFile('message', options)
              */
             if (requiredData[key].isFile) {
+                const dataBytes = {
+                    BYTES: 1,
+                    KB: 1024,
+                    MB: 1048576,
+                    GB: 1073741824,
+                    TB: 1073741824,
+                };
+
                 if (!requiredData[key].required && form[key] === "") continue;
                 const exte = requiredData[key].isFile.option.extension;
-                const size = requiredData[key].isFile.option.maxSize;
                 const files = form[key];
+                const maxSize = requiredData[key].isFile.option.maxSize;
+                let size: number = 0;
+
+                if (isNaN(maxSize)) {
+                    const match = maxSize.match(/(\d+)(\D+)/);
+
+                    if (!Object.prototype.hasOwnProperty.call(dataBytes, match[2])) {
+                        throw new TypeError(`Only use "BYTES", "KB", "MB", "GB" or "TB" `);
+                    }
+
+                    size = parseInt(match[1]) * dataBytes[match[2]];
+                } else {
+                    size = maxSize;
+                }
+
+                if (exte && typeOf(exte) !== "array") {
+                    throw new TypeError(`extension must be an array!`);
+                }
 
                 if ((exte && exte.length > 0 && files.length > 0) || (size > 0 && files.length > 0)) {
                     for (let x = 0; x < files.length; x++) {
-                        let e = files[x].mimetype.split("/")[1];
-                        let s = files[x].size;
+                        let ext = files[x]?.type ? files[x].type.split("/")[1] : files[x].mimetype.split("/")[1];
+                        let sz = files[x].size;
+                        let fileNamr = files[x].name ? files[x].name : files[x].originalname;
 
-                        if (!exte.includes(e)) {
-                            errors[key] = `Extension (.${e}) not support!`;
-                            break;
+                        if (typeOf(exte) === "array" && exte.length > 0) {
+                            if (!exte.includes(ext)) {
+                                errors[key] = `Extension (.${ext}) not support!`;
+                                break;
+                            }
                         }
-                        if (s > size) {
-                            errors[key] = `File ${
-                                files[x].originalname
-                            } size is two larg, max size is (${formatFileSize(size)})`;
+
+                        if (sz > size) {
+                            errors[key] = `File ${fileNamr} size is two larg, max size is (${formatFileSize(size)})`;
                             break;
                         }
                     }
