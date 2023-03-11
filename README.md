@@ -97,7 +97,7 @@ const form = {
 const signupError = useValidate(signupValdite, form);
 ```
 
-    ### _*Exsample* for validate image file before upload, note "example from react project"
+### _Exsample_ for validate image file before upload, note "example from react project"
 
 ```javascript
 import gm, { useValidate, schema } from "gm-validate";
@@ -144,7 +144,7 @@ const changeAvatar = () => {
 
 ```
 
-### \__Exsample_ for isColor
+### Exsample Color validate using isColor method
 
 ```javascript
 import gm, { useValidate, schema } from "gm-validate";
