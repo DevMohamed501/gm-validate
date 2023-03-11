@@ -13,3 +13,19 @@ export interface GmType {
     pattern(_pattern: RegExp, _Message?: string): any;
     collect(): any;
 }
+
+export enum Types {
+    string = "string",
+    number = "number",
+    boolean = "boolean",
+    object = "object",
+    array = "array",
+    function = "function",
+    regex = "regex",
+    date = "date",
+}
+
+export interface FileOptions {
+    extension?: string[];
+    maxSize?: number;
+}

@@ -1,6 +1,8 @@
 import { IObjectKeys } from "../types/types";
 import typeOf from "../utils/typeOf.js";
 import isNumber from "./isNumber.js";
+import checkColor from "./isColor.js";
+import formatFileSize from "../utils/sizeForma.js";
 
 const useValidate = function (schema: IObjectKeys, form: {}) {
     if (!schema) {
@@ -31,7 +33,7 @@ const useValidate = function (schema: IObjectKeys, form: {}) {
 
     for (const key in requiredData) {
         if (key === "isSchema") continue;
-        if (form.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(form, key)) {
             /**
              * * Check Between Minimum & Maximum
              */
@@ -57,6 +59,7 @@ const useValidate = function (schema: IObjectKeys, form: {}) {
              * * trim('message')
              */
             if (requiredData[key].trim) {
+                if (!requiredData[key].required && form[key] === "") continue;
                 if (typeOf(form[key]).trim() === "string") {
                     if (form[key] !== form[key].trim()) {
                         errors[key] = requiredData[key].trim.message;
@@ -70,6 +73,7 @@ const useValidate = function (schema: IObjectKeys, form: {}) {
              * * type('type','message')
              */
             if (requiredData[key].type) {
+                if (!requiredData[key].required && form[key] === "") continue;
                 if (requiredData[key].type.type === "number") {
                     if (!isNumber(form[key])) {
                         errors[key] = requiredData[key].type.message;
@@ -86,6 +90,7 @@ const useValidate = function (schema: IObjectKeys, form: {}) {
              * * min(number,'message')
              */
             if (requiredData[key].min) {
+                if (!requiredData[key].required && form[key] === "") continue;
                 if (typeOf(form[key]) === "number") {
                     if (form[key] < requiredData[key].min.min) {
                         errors[key] = requiredData[key].min.message;
@@ -128,6 +133,7 @@ const useValidate = function (schema: IObjectKeys, form: {}) {
              * * max(number,'message')
              */
             if (requiredData[key].max) {
+                if (!requiredData[key].required && form[key] === "") continue;
                 if (typeOf(form[key]) === "number") {
                     if (form[key] > requiredData[key].max.max) {
                         errors[key] = requiredData[key].max.message;
@@ -170,6 +176,7 @@ const useValidate = function (schema: IObjectKeys, form: {}) {
              * * isEmail('message')
              */
             if (requiredData[key].isEmail && requiredData[key].isEmail.isEmail) {
+                if (!requiredData[key].required && form[key] === "") continue;
                 if (typeOf(form[key]).trim() === "string") {
                     const emailRegex =
                         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -190,10 +197,25 @@ const useValidate = function (schema: IObjectKeys, form: {}) {
             }
 
             /**
+             * * ISCOLOR CHECKER
+             * * isColor('message')
+             */
+            if (requiredData[key].isColor && requiredData[key].isColor.isColor) {
+                if (!requiredData[key].required && form[key] === "") continue;
+                if (typeOf(form[key]).trim() === "string") {
+                    if (!checkColor(form[key])) {
+                        errors[key] = requiredData[key].isColor.message;
+                        continue;
+                    }
+                }
+            }
+
+            /**
              * * PATTERN CHECKER
              * * pattern(pattern,'message')
              */
             if (requiredData[key].pattern) {
+                if (!requiredData[key].required && form[key] === "") continue;
                 if (typeOf(requiredData[key].pattern.pattern).trim() === "regexp") {
                     // const passwordRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})?/);
                     const regex = requiredData[key].pattern.pattern;
@@ -202,6 +224,37 @@ const useValidate = function (schema: IObjectKeys, form: {}) {
                         continue;
                     }
                 }
+            }
+
+            /**
+             * * ISFILE CHECKER
+             * * isFile('message', options)
+             */
+            if (requiredData[key].isFile) {
+                if (!requiredData[key].required && form[key] === "") continue;
+                const exte = requiredData[key].isFile.option.extension;
+                const size = requiredData[key].isFile.option.maxSize;
+                const files = form[key];
+
+                if ((exte && exte.length > 0 && files.length > 0) || (size > 0 && files.length > 0)) {
+                    for (let x = 0; x < files.length; x++) {
+                        let e = files[x].mimetype.split("/")[1];
+                        let s = files[x].size;
+
+                        if (!exte.includes(e)) {
+                            errors[key] = `Extension (.${e}) not support!`;
+                            break;
+                        }
+                        if (s > size) {
+                            errors[key] = `File ${
+                                files[x].originalname
+                            } size is two larg, max size is (${formatFileSize(size)})`;
+                            break;
+                        }
+                    }
+                }
+
+                continue;
             }
 
             /**
@@ -221,6 +274,7 @@ const useValidate = function (schema: IObjectKeys, form: {}) {
                 }
             }
         } else {
+            if (!requiredData[key].required && !form[key]) continue;
             throw new TypeError(`${key} input not found`);
         }
     }

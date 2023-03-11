@@ -1,144 +1,174 @@
-import { IObjectKeys } from "../types/types.js";
+import { IObjectKeys, FileOptions } from "../types/types.js";
 import typeOf from "../utils/typeOf.js";
 
-export const gm = function () {
-    let inp: IObjectKeys = {};
+class Gm {
+    private inp: IObjectKeys = {};
 
     /**
      * * Check Type Error And Send Message If Found Error
      */
-    const setErrorMessageType = (_message: string | {}, input: string) => {
+    private setErrorMessageType = (_message: string | {}, input: string) => {
         if (typeOf(_message) !== "string") {
             throw new TypeError("Error message must be String ");
         }
     };
 
-    const validate = {
-        /**
-         * * Check If Required Needed
-         */
-        required(_Message: string = "Input is required") {
-            setErrorMessageType(_Message, "Required");
+    /**
+     * * Check If Required Needed
+     */
+    public required(_Message: string = "Input is required") {
+        this.setErrorMessageType(_Message, "Required");
 
-            let val = { required: true, message: _Message };
-            inp.required = val;
-            return validate;
-        },
+        let val = { required: true, message: _Message };
+        this.inp.required = val;
+        return this;
+    }
 
-        /**
-         * * Check If Type Needed
-         */
-        type(_type: string, _Message: string = `Input not a type ${_type}!`) {
-            if (!_type) {
-                throw new TypeError("Type parameter is missing");
-            }
+    /**
+     * * Check If Type Needed
+     */
+    public type(_type: string, _Message: string = `Input not a type ${_type}!`) {
+        if (!_type) {
+            throw new TypeError("Type parameter is missing");
+        }
 
-            if (typeOf(_type) !== "string") {
-                throw new TypeError("Type must be String");
-            }
+        if (typeOf(_type) !== "string") {
+            throw new TypeError("Type must be String");
+        }
 
-            setErrorMessageType(_Message, "Type");
+        this.setErrorMessageType(_Message, "Type");
 
-            let val = { type: _type, message: _Message };
-            inp.type = val;
-            return validate;
-        },
+        let val = { type: _type, message: _Message };
+        this.inp.type = val;
+        return this;
+    }
 
-        /**
-         * * Check If Min Length Needed
-         */
-        min(_number: number, _Message = `Minimum is ${_number}`) {
-            if (!_number) {
-                throw new TypeError("Min parameter is missing");
-            }
+    /**
+     * * Check If Min Length Needed
+     */
+    public min(_number: number, _Message = `Minimum is ${_number}`) {
+        if (!_number) {
+            throw new TypeError("Min parameter is missing");
+        }
 
-            if (typeOf(_number) !== "number") {
-                throw new TypeError("Min parameter must be Number");
-            }
+        if (typeOf(_number) !== "number") {
+            throw new TypeError("Min parameter must be Number");
+        }
 
-            setErrorMessageType(_Message, "Min");
+        this.setErrorMessageType(_Message, "Min");
 
-            let val = { min: _number, message: _Message };
-            inp.min = val;
-            return validate;
-        },
+        let val = { min: _number, message: _Message };
+        this.inp.min = val;
+        return this;
+    }
 
-        /**
-         * * Check If Max Length Needed
-         */
-        max(_number: number, _Message = `Maximum is ${_number}`) {
-            if (!_number) {
-                throw new TypeError("Max parameter is missing");
-            }
+    /**
+     * * Check If Max Length Needed
+     */
+    public max(_number: number, _Message = `Maximum is ${_number}`) {
+        if (!_number) {
+            throw new TypeError("Max parameter is missing");
+        }
 
-            if (typeOf(_number) !== "number") {
-                throw new TypeError("Max parameter must be Number");
-            }
-            setErrorMessageType(_Message, "Max");
+        if (typeOf(_number) !== "number") {
+            throw new TypeError("Max parameter must be Number");
+        }
+        this.setErrorMessageType(_Message, "Max");
 
-            let val = { max: _number, message: _Message };
-            inp.max = val;
+        let val = { max: _number, message: _Message };
+        this.inp.max = val;
 
-            return validate;
-        },
+        return this;
+    }
 
-        /**
-         * * Check If Email Needed
-         */
-        isEmail(_Message: String = "Email not valid", _support?: string[]) {
-            setErrorMessageType(_Message, "isEmail");
-            let val: any = { isEmail: true, message: _Message };
-            if (_support && typeOf(_support) === "array") {
-                val.support = _support;
-            }
+    /**
+     * * Check If Email Needed
+     */
+    public isEmail(_Message: String = "Email not valid", _support?: string[]) {
+        this.setErrorMessageType(_Message, "isEmail");
+        let val: any = { isEmail: true, message: _Message };
+        if (_support && typeOf(_support) === "array") {
+            val.support = _support;
+        }
 
-            inp.isEmail = val;
-            return validate;
-        },
+        this.inp.isEmail = val;
+        return this;
+    }
 
-        /**
-         * * Check If Trim Needed
-         */
-        trim(_Message: string = "Input not support start or end space") {
-            setErrorMessageType(_Message, "Trim");
+    /**
+     * * Check If isColor Needed
+     */
+    public isColor(_Message: String = "Color not valid") {
+        this.setErrorMessageType(_Message, "isColor");
+        let val: any = { isColor: true, message: _Message };
 
-            let val = { trim: true, message: _Message };
-            inp.trim = val;
-            return validate;
-        },
+        this.inp.isColor = val;
+        return this;
+    }
 
-        /**
-         * * Check Between tow value is matching Or Not
-         */
-        pattern(_pattern: RegExp, _Message: string = `Pattern not match`) {
-            setErrorMessageType(_Message, "match");
+    /**
+     * * Check If isFile Needed
+     */
 
-            let val = { pattern: _pattern, message: _Message };
-            inp.pattern = val;
-            return validate;
-        },
+    public isFile(
+        // _Message: String = "File not valid",
+        options: FileOptions = {
+            extension: [],
+            maxSize: 0,
+        }
+    ) {
+        // this.setErrorMessageType(_Message, "isFile");
+        let val: any = { isFile: true, message: "", option: { ...options } };
 
-        /**
-         * * Check Between tow value is matching Or Not
-         */
-        match(_field: string, _Message: string = `${_field} not match`) {
-            setErrorMessageType(_Message, "match");
+        this.inp.isFile = val;
+        return this;
+    }
 
-            let val = { match: _field, message: _Message };
-            inp.match = val;
-            return validate;
-        },
+    /**
+     * * Check If Trim Needed
+     */
+    public trim(_Message: string = "Input not support start or end space") {
+        this.setErrorMessageType(_Message, "Trim");
 
-        /**
-         * * Collect All Data Needed To Check IF The Input Like This Data
-         */
-        collect() {
-            return inp;
-        },
-    };
+        let val = { trim: true, message: _Message };
+        this.inp.trim = val;
+        return this;
+    }
+
+    /**
+     * * Check Between tow value is matching Or Not
+     */
+    public pattern(_pattern: RegExp, _Message: string = `Pattern not match`) {
+        this.setErrorMessageType(_Message, "match");
+
+        let val = { pattern: _pattern, message: _Message };
+        this.inp.pattern = val;
+        return this;
+    }
+
+    /**
+     * * Check Between tow value is matching Or Not
+     */
+    public match(_field: string, _Message: string = `${_field} not match`) {
+        this.setErrorMessageType(_Message, "match");
+
+        let val = { match: _field, message: _Message };
+        this.inp.match = val;
+        return this;
+    }
+
+    /**
+     * * Collect All Data Needed To Check IF The Input Like This Data
+     */
+    public collect() {
+        return this.inp;
+    }
 
     /**
      * * Return Checker Functions
      */
-    return validate;
-};
+}
+
+const gm = Gm;
+
+export default gm;
