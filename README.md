@@ -18,9 +18,9 @@ Install the library with `npm install gm-validate`
 import gm from "gm-validate";
 ```
 
-### Create required validation schema for validate input data
+## In this version will use " new " keyword
 
-## In this version will use new keyword
+### Create required validation schema for validate input data
 
 ```javascript
 import gm, { schema, useValidate } from "gm-validate";
@@ -97,6 +97,79 @@ const form = {
 const signupError = useValidate(signupValdite, form);
 ```
 
+    ### _*Exsample* for validate image file before upload, note "example from react project"
+
+```javascript
+import gm, { useValidate, schema } from "gm-validate";
+// schema
+const imageValidate = schema({
+        avatar: new gm()
+            .required("Please select image first!")
+            .isFile({ maxSize: 5154521, extension: ["png"] })
+            .collect(),
+    });
+
+/*
+    maxSize : number | string    default:0
+    can use like :
+    maxSize : 512545521
+    maxSize : "500BYTES"
+    maxSize : "300KB"
+    maxSize : "5MB"
+    maxSize : "1GB"
+    maxSize : "1TB"
+
+    ----------------------
+    extension : array | undefined   default:undefined
+    can use like :
+    extension :["png", "jpge",more...]
+*/
+    // Some reactjs code
+    const [avatar, setAvatar] = useState<FileList | null | undefined | any>();
+    const file = useRef<HTMLInputElement>(null);
+
+
+// Validate and return error
+const imageError = useValidate(imageValidate, { avatar });
+
+const changeAvatar = () => {
+        const form = new FormData();
+
+        if (!imageError) {
+            form.append("avatar", avatar[0]);
+
+            // Code to dispatch avatar to server....
+        }
+    };
+
+```
+
+### \__Exsample_ for isColor
+
+```javascript
+import gm, { useValidate, schema } from "gm-validate";
+// schema
+const formSchema = schema({
+    color: new gm().required("color is required").isColor("Please provid a valid color").collect(),
+});
+
+// form
+const form = {
+    color: "green",
+};
+
+/*
+color : string
+can use like :
+color:"red"
+color:"#f00"
+color:"#f00f00"
+color:"#f00f0005"
+*/
+
+const formError = useValidate(formSchema, form);
+```
+
 > ## **Method**
 
 -   `schema(input : {})`
@@ -121,6 +194,6 @@ const signupError = useValidate(signupValdite, form);
 
 -   `isColor(message : string)`
 
--   `isFile(options{extension:[] , maxSize:number})`
+-   `isFile(options{extension : [] , maxSize : number | string})`
 
 -   `collect( )`
